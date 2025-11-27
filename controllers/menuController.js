@@ -109,3 +109,66 @@ export const getCategoryById = async (req, res) => {
     res.status(500).json({ message: "Error fetching category", error });
   }
 };
+
+// Update Menu Item
+export const updateMenuItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedItem = await MenuItem.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true, // ensures valid data
+    }).populate("category_id", "name");
+
+    if (!updatedItem)
+      return res.status(404).json({ message: "Menu item not found" });
+
+    res.status(200).json({
+      message: "Menu item updated successfully",
+      item: updatedItem,
+    });
+  } catch (error) {
+    console.error("UPDATE ERROR:", error); // <---- Important
+    res.status(500).json({ message: "Error updating menu item", error });
+  }
+};
+
+// Delete Menu Item
+export const deleteMenuItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedItem = await MenuItem.findByIdAndDelete(id);
+
+    if (!deletedItem)
+      return res.status(404).json({ message: "Menu item not found" });
+
+    res.status(200).json({
+      message: "Menu item deleted successfully",
+      deleted: deletedItem,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting menu item", error });
+  }
+};
+export const toggleMenuItemStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // true / false
+
+    const updatedItem = await MenuItem.findByIdAndUpdate(
+      id,
+      { is_available: status },
+      { new: true }
+    );
+
+    if (!updatedItem)
+      return res.status(404).json({ message: "Menu item not found" });
+
+    res.status(200).json({
+      message: "Status updated successfully",
+      item: updatedItem,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating menu item status", error });
+  }
+};
