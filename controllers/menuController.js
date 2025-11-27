@@ -33,11 +33,13 @@ export const addMenuItem = async (req, res) => {
     if (req.user.role !== "admin")
       return res.status(403).json({ message: "Only admin can add items" });
 
-    const { category_id, name, price, is_available, is_veg } = req.body;
+    const { category_id, name, description, price, is_available, is_veg } =
+      req.body;
 
     const newItem = await MenuItem.create({
       category_id,
       name,
+      description,
       price,
       is_available,
       is_veg,
@@ -52,10 +54,7 @@ export const addMenuItem = async (req, res) => {
 // ✅ Get all Menu Items (with category populated)
 export const getMenuItems = async (req, res) => {
   try {
-    const items = await MenuItem.find().populate(
-      "category_id",
-      "name category"
-    );
+    const items = await MenuItem.find().populate("category_id", "name");
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ message: "Error fetching menu items", error });
