@@ -8,9 +8,9 @@ export const addCategory = async (req, res) => {
     if (req.user.role !== "admin")
       return res.status(403).json({ message: "Only admin can add category" });
 
-    const { category, name } = req.body;
+    const { name } = req.body;
 
-    const newCategory = await MenuCategory.create({ category, name });
+    const newCategory = await MenuCategory.create({ name });
     res.status(201).json({ message: "Category added", category: newCategory });
   } catch (error) {
     res.status(500).json({ message: "Error adding category", error });
