@@ -7,6 +7,9 @@ import {
   addMenuAddon,
   getMenuAddons,
   getCategoryById,
+  updateMenuItem,
+  deleteMenuItem,
+  toggleMenuItemStatus,
 } from "../controllers/menuController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../middlewares/roleMiddleware.js";
@@ -30,6 +33,13 @@ router.get(
   authorizeRoles("admin", "chef", "waiter", "cashier"),
   getMenuItems
 );
+// Update menu item
+router.put("/item/:id", updateMenuItem);
+
+// Delete menu item
+router.delete("/item/:id", deleteMenuItem);
+
+router.patch("/item/status/:id", toggleMenuItemStatus);
 
 // Addons
 router.post("/addon", protect, authorizeRoles("admin"), addMenuAddon);
