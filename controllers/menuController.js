@@ -33,14 +33,22 @@ export const addMenuItem = async (req, res) => {
     if (req.user.role !== "admin")
       return res.status(403).json({ message: "Only admin can add items" });
 
-    const { category_id, name, description, price, is_available, is_veg } =
-      req.body;
+    const {
+      category_id,
+      name,
+      description,
+      price,
+      halfPrice,
+      is_available,
+      is_veg,
+    } = req.body;
 
     const newItem = await MenuItem.create({
       category_id,
       name,
       description,
       price,
+      halfPrice,
       is_available,
       is_veg,
     });
