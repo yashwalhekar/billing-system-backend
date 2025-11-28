@@ -18,6 +18,9 @@ const menuItemSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  halfPrice: {
+    type: Number,
+  },
   is_available: {
     type: Boolean,
     default: true,
