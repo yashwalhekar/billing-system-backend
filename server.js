@@ -5,6 +5,8 @@ import authRoutes from "./routes/authRoutes.js";
 import tableRoutes from "./routes/tableRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
 import cors from "cors";
+import seedAdmin from "./seedAdmin.js";
+import staffRoutes from "./routes/staffRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -19,11 +21,12 @@ app.use(
 );
 
 app.use(express.json());
-
+seedAdmin();
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tables", tableRoutes);
 app.use("/api/menu", menuRoutes);
+app.use("/api/staff", staffRoutes);
 
 app.get("/", (req, res) =>
   res.send("Restaurant Billing Backend is Running 🚀")
