@@ -34,6 +34,26 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+export const createAdminUser = async (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Only admin can create admins" });
+  }
+
+  const { first_name, last_name, phone, password } = req.body;
+
+  const exists = await User.findOne({ phone });
+  if (exists) return res.status(400).json({ message: "User already exists" });
+
+  const user = await User.create({
+    first_name,
+    last_name,
+    phone,
+    password,
+    role: "admin",
+  });
+
+  res.status(201).json({ message: "Admin created", user });
+};
 // Login User
 export const loginUser = async (req, res) => {
   try {
